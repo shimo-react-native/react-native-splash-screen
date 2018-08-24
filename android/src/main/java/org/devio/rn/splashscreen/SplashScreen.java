@@ -59,6 +59,16 @@ public class SplashScreen {
 
                     if (!mSplashDialog.isShowing()) {
                         mSplashDialog.show();
+                        Window dialogWindow = mSplashDialog.getWindow();
+                        if (dialogWindow != null) {
+                            Display display = dialogWindow.getWindowManager().getDefaultDisplay();
+                            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+                            Point point = new Point();
+                            display.getSize(point);
+                            lp.width = point.x;
+                            lp.height = point.y;
+                            dialogWindow.setAttributes(lp);
+                        }
                     }
                 }
             }
