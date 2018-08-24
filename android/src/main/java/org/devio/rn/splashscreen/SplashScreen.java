@@ -3,6 +3,7 @@ package org.devio.rn.splashscreen;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -53,13 +54,14 @@ public class SplashScreen {
             public void run() {
                 if (!activity.isFinishing()) {
                     if (fullScreen) {
-                        mSplashDialog = new FullscreenDialog(activity,R.style.SplashScreen_Fullscreen);
+                        mSplashDialog = new FullscreenDialog(activity, R.style.SplashScreen_Fullscreen);
                     } else {
                         mSplashDialog = new Dialog(activity, R.style.SplashScreen_SplashTheme);
                     }
 
                     mSplashDialog.setContentView(R.layout.launch_screen);
                     mSplashDialog.setCancelable(false);
+
 
                     if (!mSplashDialog.isShowing()) {
                         mSplashDialog.show();
@@ -70,13 +72,19 @@ public class SplashScreen {
                             Point point = new Point();
                             display.getSize(point);
                             lp.width = point.x;
-                            lp.height = point.y;
+                            lp.height = point.y - getStatusBarHeight(activity);
                             dialogWindow.setAttributes(lp);
                         }
                     }
                 }
             }
         });
+    }
+
+    public static int getStatusBarHeight(@NonNull Activity activity) {
+        Resources resources = activity.getResources();
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        return resources.getDimensionPixelSize(resourceId);
     }
 
     /**
